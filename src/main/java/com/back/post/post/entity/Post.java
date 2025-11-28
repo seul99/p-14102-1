@@ -1,6 +1,6 @@
 package com.back.post.post.entity;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.back.global.jpa.BaseEntity;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Post extends BaseEntity{
+public class Post extends BaseEntity {
     private String title;
     private String content;
 
