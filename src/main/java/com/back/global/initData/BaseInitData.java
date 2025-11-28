@@ -1,11 +1,15 @@
 package com.back.global.initData;
 
 
-import com.back.post.post.service.postService;
+import com.back.post.post.entity.Post;
+import com.back.post.post.service.PostService;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BaseInitData {
-    private postService postService;
+    private PostService postService;
 
     @Bean
     ApplicationRunner baseInitDataApplicationRunner(){
@@ -15,7 +19,7 @@ public class BaseInitData {
             Post post1 = postService.write("제목 1", "내용 1");
             Post post2 = postService.write("제목 1", "내용 1");
             Post post3 = postService.write("제목 1", "내용 1");
-        }
+        };
     }
 
 }
