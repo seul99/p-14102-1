@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -17,7 +18,7 @@ public class PostController {
     @ResponseBody
     public String showWrite(){
         return """
-                <form action="doWrite">
+                <form method="POST">
                                   <input type="text" name="title" placeholder="제목" value="안녕">
                                   <br>
                                   <textarea name="content" placeholder="내용">반가워.</textarea>
@@ -27,7 +28,8 @@ public class PostController {
                 """;
     }
 
-    @GetMapping("/posts/doWrite")
+//    @GetMapping("/posts/doWrite")
+    @PostMapping("/posts/doWrite")
     @ResponseBody
     @Transactional
     public String write(@RequestParam(defaultValue = "") String title, @RequestParam(defaultValue = "") String content){
