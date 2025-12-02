@@ -43,7 +43,7 @@ public class PostController {
         private String content;
     }
 
-    @GetMapping("/post/write")
+    @GetMapping("/posts/write")
     public String showWrite(@ModelAttribute("form") WriteForm form){
         return "post/post/write";
     }
