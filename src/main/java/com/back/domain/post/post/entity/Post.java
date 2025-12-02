@@ -35,4 +35,9 @@ public class Post extends BaseEntity {
 
         return postComment;
     }
+
+    public void modify(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
