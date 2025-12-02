@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -25,6 +26,37 @@ public class PostController {
     public String SiteName() {
         return "커뮤니티 사이트A";
     }
+    
+    //    수정하기
+    @AllArgsConstructor
+    @Getter
+    @Setter
+    public static class ModifyForm{
+
+        @NotBlank(message = "01-title-제목을 입력해주세요.")
+        @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력 가능합니다.")
+        private String title;
+
+        @NotBlank(message = "03-content-내용을 입력해주세요.")
+        @Size(min = 2, max=20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
+        private String content;
+    }
+
+    @GetMapping("/posts/{id}/modify")
+    public String showModify(
+            @PathVariable int id,
+            @ModelAttribute("form") ModifyForm form,
+            Model model
+    ) {
+        Post post = postService.findById(id).get();
+
+        model.addAttribute("post",post);
+        form.setTitle(post.getTitle());
+        form.setContent(post.getContent());
+
+        return "post/post/modify";
+    }
+
 
     @AllArgsConstructor
     @Getter
@@ -88,9 +120,13 @@ public class PostController {
 
     @GetMapping("posts")
     @Transactional(readOnly = true)
-    @ResponseBody
-    public List<Post> showList() {
-        return postService.findAll();
+//    @ResponseBody
+    public String showList(Model mod) {
+        List<Post> posts = postService.findAll();
+
+        mod.addAttribute("posts", posts);
+
+        return "post/post/list";
     }
 
     @GetMapping("/posts/")
