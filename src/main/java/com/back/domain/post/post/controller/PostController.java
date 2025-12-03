@@ -24,7 +24,7 @@ public class PostController {
 
     @ModelAttribute("siteName")
     public String SiteName() {
-        return "커뮤니티 사이트A";
+        return "Sia's Community";
     }
     
     //    수정하기
