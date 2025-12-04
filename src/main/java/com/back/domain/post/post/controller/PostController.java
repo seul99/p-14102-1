@@ -28,31 +28,43 @@ public class PostController {
     }
     
     //    수정하기
-    @AllArgsConstructor
-    @Getter
-    @Setter
-    public static class ModifyForm{
+//    @AllArgsConstructor
+//    @Getter
+//    @Setter
+//    public static class ModifyForm{
+//
+//        @NotBlank(message = "01-title-제목을 입력해주세요.")
+//        @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력 가능합니다.")
+//        private String title;
+//
+//        @NotBlank(message = "03-content-내용을 입력해주세요.")
+//        @Size(min = 2, max=20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
+//        private String content;
+//    }
 
-        @NotBlank(message = "01-title-제목을 입력해주세요.")
-        @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력 가능합니다.")
-        private String title;
+    record ModifyForm(
+            @NotBlank(message = "01-title-제목을 입력해주세요.")
+            @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력가능합니다.")
+            String title,
+            @NotBlank(message = "03-content-내용을 입력해주세요.")
+            @Size(min = 2, max = 20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
+            String content
+    ) {
 
-        @NotBlank(message = "03-content-내용을 입력해주세요.")
-        @Size(min = 2, max=20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
-        private String content;
     }
 
     @GetMapping("/posts/{id}/modify")
     public String showModify(
             @PathVariable int id,
-            @ModelAttribute("form") ModifyForm form,
+//            @ModelAttribute("form") ModifyForm form,
             Model model
     ) {
         Post post = postService.findById(id).get();
 
         model.addAttribute("post",post);
-        form.setTitle(post.getTitle());
-        form.setContent(post.getContent());
+//        form.setTitle(post.getTitle());
+//        form.setContent(post.getContent());
+        model.addAttribute("form", new ModifyForm(post.getTitle(), post.getContent()));
 
         return "post/post/modify";
     }
@@ -72,23 +84,34 @@ public class PostController {
             return "post/post/modify";
         }
 
-        postService.modify(post, form.getTitle(), form.getContent());
+        postService.modify(post, form.title(), form.content());
 
         return "redirect:/posts/" + post.getId();
     }
 
 
-    @AllArgsConstructor
-    @Getter
-    public static class WriteForm {
+//    @AllArgsConstructor
+//    @Getter
+//    public static class WriteForm {
+//
+//        @NotBlank(message = "01-title-제목을 입력해주세요.")
+//        @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력가능합니다.")
+//        private String title;
+//
+//        @NotBlank(message = "04-content-내용을 입력해주세요.")
+//        @Size(min = 2, max = 20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
+//        private String content;
+//    }
 
-        @NotBlank(message = "01-title-제목을 입력해주세요.")
-        @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력가능합니다.")
-        private String title;
+    record WriteForm(
+            @NotBlank(message = "01-title-제목을 입력해주세요.")
+            @Size(min = 2, max = 20, message = "02-title-제목은 2자 이상, 20자 이하로 입력가능합니다.")
+            String title,
+            @NotBlank(message = "03-content-내용을 입력해주세요.")
+            @Size(min = 2, max = 20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
+            String content
+    ){
 
-        @NotBlank(message = "04-content-내용을 입력해주세요.")
-        @Size(min = 2, max = 20, message = "04-content-내용은 2자 이상, 20자 이하로 입력가능합니다.")
-        private String content;
     }
 
     @GetMapping("/posts/write")
@@ -122,7 +145,7 @@ public class PostController {
             return  "post/post/write";
         }
 
-        Post post = postService.write(form.getTitle(), form.getContent());
+        Post post = postService.write(form.title(), form.content());
 
 //        model.addAttribute("post", post);
 

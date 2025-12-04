@@ -1,70 +1,89 @@
 <h1 th:text="${siteName}"></h1>
 
-<p>글 번호 : [[${post.id}]]</p>
+<div style="width: 700px; padding: 0 20px;">
 
-<h2>제목 : [[${post.title}]]</h2>
-<hr>
-<p>작성일 : <span th:text="${#temporals.format(post.createDate, 'yy.MM.dd HH:mm')}">작성일</span></p>
-<p>수정일 : <span th:text="${#temporals.format(post.modifyDate, 'yy.MM.dd HH:mm')}">수성일</span></p>
-<hr>
-<h3>내용</h3>
-<div style="white-space:pre-line; border: 1px solid #fff; padding: 12px;">[[${post.content}]]</div>
 
-<hr>
-
-<!--댓글 작성-->
-<h2>댓글 작성</h2>
-<script>
-    function PostCommnet_submitWriteForm(from) {
-        form.content.value = form.content.value.trim();
-
-        if (form.content.value.length === 0) {
-            alert("댓글 내용을 입력해주세요.");
-            form.content.focus();
-
-            return;
-        }
-
-        if (form.content.value.length < 2) {
-            alert("댓글 내용을 2자 이상 입력해주세요.");
-            form.content.focus();
-
-            return;
-        }
-
-        form.submit();
-    }
-</script>
-<form th:action="@{/posts/{id}/comments/write(id=${post.id})}" method="post"
-      onsubmit="PostComment__submitWriteForm(this); return false;">
-    <div>
-        <label for="content">내용</label> <br>
-        <textarea id="content" name="content" rows="5" cols="50"></textarea>
-    </div>
-    <div>
-        <button type="submit">작성</button>
-    </div>
-</form>
-
-<!-- 댓글보기 -->
-<hr>
-<h2>댓글</h2>
-<ul>
-    <li th:each="postComment : ${post.comments.reversed}">
-        <h3>번호 : <span th:text="${postComment.id}">댓글 번호</span></h3>
-        <h4>작성일 : <span th:text="${#temporals.format(postComment.createDate, 'yy-mm-dd HH:mm')}">작성일</span></h4>
-        <h4>수정일 : <span th:text="${#temporals.format(postComment.modifyDate, 'yy-mm-dd HH:mm')}">수정일</span></h4>
-<div style="white-space: pre-line;" th:text="${postComment.content}">댓글 내용</div>
-        <div>
-            <a th:href="@{/posts/{id}/comments/{commentId}/modify(id=${post.id}, commentId=${postComment.id})}">수정</a>
-            <a onclick="return confirm('정말 삭제하시겠습니까?')" th:href="@{/posts/{id}/comments/{commentId}/delete(id=${post.id}, commentId=${postComment.id})}">삭제</a>
+    <h2>제목 : [[${post.title}]]</h2>
+    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+        <div style="display: flex; gap: 10px;">
+            <p>번호 : [[${post.id}]]</p>
+            <p>|</p>
+            <p>작성일 : <span th:text="${#temporals.format(post.createDate, 'yy.MM.dd HH:mm')}">작성일</span></p>
         </div>
-        <hr>
-    </li>
-</ul>
+       <p>수정일 : <span th:text="${#temporals.format(post.modifyDate, 'yy.MM.dd HH:mm')}">수성일</span></p>
+    </div>
 
-<div>
-    <a href=".">글목록</a> /
-    <a href="write">글 쓰기</a> /
-    <a th:href="@{{id}/modify(id=${post.id})}">글 수정</a>
+    <hr>
+<!--    <h3>내용</h3>-->
+    <div style="white-space:pre-line; border-radius: 10px; padding: 10px 10px;  width: 650px; height: 200px; margin-bottom: 20px; ">[[${post.content}]]</div>
+
+    <hr>
+
+    <!-- 댓글보기 -->
+    <h4>전체 댓글</h4>
+    <hr>
+    <ul style="all:unset;">
+        <li style="all:unset;" th:each="postComment : ${post.comments.reversed}">
+            <div>
+                <div style="display: flex; width: 500px; font-size: 12px; justify-content: space-between;">
+                    <p>번호 : <span th:text="${postComment.id}">댓글 번호</span></p>
+                    <p>작성일 : <span th:text="${#temporals.format(postComment.createDate, 'yy-mm-dd HH:mm')}">작성일</span></p>
+                </div>
+            </div>
+
+            <div style="width: 500px;">
+                <div style="white-space: pre-line; border:1px solid silver; border-radius: 10px; width: 500px; height: 50px; margin: 10px 0; padding:10px 10px;" th:text="${postComment.content}">댓글 내용</div>
+                <p style="font-size: 12px; text-align: right;">수정일 : <span th:text="${#temporals.format(postComment.modifyDate, 'yy-mm-dd HH:mm')}">수정일</span></p>
+            </div>
+
+            <div style="margin: 20px 0; display: flex; gap: 20px; ">
+                <a style="all: unset; cursor:pointer; padding: 2px 7px; border-radius: 5px; background: green; color: white;" th:href="@{/posts/{id}/comments/{commentId}/modify(id=${post.id}, commentId=${postComment.id})}">수정</a>
+                <a style="all: unset; cursor:pointer; padding: 2px 7px; border-radius: 5px; background: red; color: white;" onclick="return confirm('정말 삭제하시겠습니까?')" th:href="@{/posts/{id}/comments/{commentId}/delete(id=${post.id}, commentId=${postComment.id})}">삭제</a>
+            </div>
+            <hr>
+        </li>
+    </ul>
+
+
+
+    <!--댓글 작성-->
+    <h4>댓글 작성</h4>
+    <script>
+        function PostCommnet_submitWriteForm(from) {
+            form.content.value = form.content.value.trim();
+
+            if (form.content.value.length === 0) {
+                alert("댓글 내용을 입력해주세요.");
+                form.content.focus();
+
+                return;
+            }
+
+            if (form.content.value.length < 2) {
+                alert("댓글 내용을 2자 이상 입력해주세요.");
+                form.content.focus();
+
+                return;
+            }
+
+            form.submit();
+        }
+    </script>
+    <form th:action="@{/posts/{id}/comments/write(id=${post.id})}" method="post"
+          onsubmit="PostComment__submitWriteForm(this); return false;">
+        <div>
+            <label for="content">내용</label> <br>
+            <textarea  style="white-space: pre-line; border:1px solid silver; border-radius: 10px; width: 500px; height: 100px; margin: 10px 0; padding:10px 10px;" id="content" name="content" rows="5" cols="50"></textarea>
+        </div>
+        <div style="display: flex; justify-content: right; width: 500px">
+            <button  style="all: unset; cursor:pointer; padding: 2px 7px; border-radius: 5px; background: silver; margin: 20px 0 ;"  type="submit">작성</button>
+        </div>
+    </form>
+
+
+    <div style="margin: 30px 0; display: flex; gap:20px;">
+        <a style="all: unset; cursor:pointer; padding: 2px 7px; border-radius: 5px; background: silver;" href=".">목록</a>
+        <a style="all: unset; cursor:pointer; padding: 2px 7px; border-radius: 5px; background: darkblue;  color: white;" href="write">글 쓰기</a>
+        <a  style="all: unset; cursor:pointer; padding: 2px 7px; border-radius: 5px; background: green; color: white;" th:href="@{{id}/modify(id=${post.id})}">글 수정</a>
+    </div>
 </div>
